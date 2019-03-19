@@ -73,6 +73,14 @@ Results:    -f) file HW_6_data_2D.dat from dir ./data/
             -c) the algorithm will attempt two mean clusters because clusters is set to 2
 ```
 
+### Plot Lable
+
+Scatter Plot (0.90 > 0.20)
+```
+0.90 = maximum mean difference last calculated between the specified number of clusters
+0.20 = mean difference that must be obtained before exiting the while loop
+```
+
 ## License
 
 This project is not licensed but feel free to play with any part you so desire.

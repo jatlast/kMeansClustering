@@ -30,20 +30,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 # required for determining data file contents on the fly
 import re
-# required for defaultdict
-#from collections import defaultdict
 
 # allow command line options
 import argparse
 parser = argparse.ArgumentParser(description="perform the k-means clustering on 1 to 2-dimensional data")
 parser.add_argument("-f", "--filename", default="./data/HW_6_data_1D.dat", help="file name (and path if not in . dir)")
 parser.add_argument("-c", "--clusters", type=int, choices=[2, 3], default=2, help="number of clusters to try")
-parser.add_argument("-v", "--verbosity", type=int, choices=[0, 1, 2], help="increase output verbosity")
+parser.add_argument("-v", "--verbosity", type=int, choices=[0, 1, 2], default=0, help="increase output verbosity")
 args = parser.parse_args()
 
 # create a dictionary of list objects equal to the number of clusters to test
 clust_dict = {}
-#clust_dict = defaultdict(list)
 for i in range(1, args.clusters + 1):
     clust_dict[i] = []
 
@@ -95,10 +92,10 @@ variables_dict = {
     'mean_change_max' : 0.9
     , 'mean_change_threshold' : 0.2
     , 'plot_title' : 'Default Title'
-    , 'dColors' : {
-        1 : ['k.', 'bo'] # blue . data and red o mean
-        , 2 : ['g+', 'rP'] # green + data and yellow "filled +" mean
-        , 3 : ['cx', 'mX'] # green + data and yellow "filled +" mean
+    , 'dColors' : { # plotting shapes and colors
+        1 : ['k.', 'bo']    # black . data and blue o mean
+        , 2 : ['g+', 'rP']  # green + data and red "filled +" mean
+        , 3 : ['cx', 'mX']  # cyan x data and magenta "filled x" mean
     }
 }
 
@@ -108,7 +105,9 @@ with open(args.filename, mode='r') as data_file:
     y = []
     # parse data file
     for line in data_file:
+        # a regular expression to match both the 1-dimensional & 2-dimensional files supplied
         match = re.search(r'(\d+\.\d+)\s*(\d+\.\d+)?', line)
+        # get the x (and possibly the y) values
         if match:
             if match.group(1):
                 x.append(float(match.group(1)))
@@ -120,6 +119,7 @@ with open(args.filename, mode='r') as data_file:
     x_len = len(x)
     y_len = len(y)
     mean_dict = {}
+    # pick random starting "means" from supplied data for the specified number of clusters
     for j in range(1, args.clusters + 1):
         rand_int = random.randint(1,x_len)
         if y_len > 0:
@@ -170,7 +170,6 @@ with open(args.filename, mode='r') as data_file:
         if y_len > 0:
             Scatterplot2D(clust_dict, mean_dict, variables_dict)
         else:
-#            variables_dict['plot_title'] = '1D Scatter Plot (' + str(variables_dict['mean_change_max']) + ' > ' + str(variables_dict['mean_change_threshold']) + ')'
             Scatterplot1D(clust_dict, mean_dict, variables_dict)
 
         # clear the lists, recalculate the means, and store the maximum change
@@ -185,8 +184,9 @@ with open(args.filename, mode='r') as data_file:
             else:
                 new_mean = np.mean(clust_dict[i])           # calculate the new mean value
                 mean_change = abs(new_mean - mean_dict[i])  # calculate the change in means
-            print(f"new_mean = ({new_mean})")
-            print(f"mean_change = ({mean_change})")
+            if args.verbosity > 1:
+                print(f"new_mean = ({new_mean})")
+                print(f"mean_change = ({mean_change})")
             mean_dict[i] = new_mean                     # set recalculated mean
             clust_dict[i] = []                          # clear the list
             # on the first pass set the max to the current
