@@ -13,7 +13,8 @@ Assignment Homework 6: Due: 03/19/2019 5:59 PM
         clusters as they move.
     b.  (in addition Graduate Students do this) Extend your code to perform the kmeans
         clustering on 2-dimensional data. Use the data provided in HW_6_data_2D.dat
-        located on BB. Run your code for 2 and 3 clusters and plot out the data as a 2-dimensional scatterplot and plot the corresponding cluster centers.
+        located on BB. Run your code for 2 and 3 clusters and plot out the data as a
+        2-dimensional scatterplot and plot the corresponding cluster centers.
 ```
 ## False Starts
 
@@ -51,6 +52,7 @@ It should run in any Python 3.6+ environment
 ### Command Line Specifications
 ```
 > python kMeanClustering.py -h
+--------------------------------------------------------------------
 usage: kMeanClustering.py [-h] [-f FILENAME] [-c {2,3}] [-v {0,1,2}]
 
 perform the k-means clustering on 1 to 2-dimensional data
@@ -63,6 +65,12 @@ optional arguments:
                         number of clusters to try
   -v {0,1,2}, --verbosity {0,1,2}
                         increase output verbosity
+--------------------------------------------------------------------
+
+Example> python kMeanClustering.py -v 2 -f ./data/HW_6_data_2D.dat -c 2
+Results:    -f) file HW_6_data_2D.dat from dir ./data/
+            -v) verbosity is set to it most verbose setting of 2
+            -c) the algorithm will attempt two mean clusters because clusters is set to 2
 ```
 
 ## License
